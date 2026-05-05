@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AURA Premium Men's Clothing - Elevate your style with our curated collections of eastern wear, formal attire, and casual essentials.">
+    <title>AURA | Premium Men's Clothing</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+
+<!-- ==================== HEADER ==================== -->
+<header class="site-header">
+    <div class="nav-container">
+        <div class="nav-left">
+            <button class="menu-toggle" id="sidebarToggle" aria-label="Open menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+        <a class="nav-brand" href="#">AURA</a>
+        <div class="nav-right">
+            <button class="nav-icon" id="searchToggle" aria-label="Search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span class="icon-label">SEARCH</span>
+            </button>
+            <div class="api-status" id="apiStatus">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Checking...</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <span class="sidebar-title">MENU</span>
+        <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link">Home</a>
+        <a href="#collections" class="sidebar-link">Collections</a>
+        <a href="#featured-products" class="sidebar-link">New Arrivals</a>
+        <a href="#newsletter" class="sidebar-link">Newsletter</a>
+        <button class="sidebar-link" id="themeToggle">
+            <span>Dark Mode</span>
+            <div>
+                <i class="fa-solid fa-sun theme-icon-light" style="display:none;"></i>
+                <i class="fa-solid fa-moon theme-icon-dark"></i>
+            </div>
+        </button>
+        <div class="sidebar-divider"></div>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="#" class="sidebar-footer-link"><i class="fa-regular fa-user"></i> Login</a>
+        <a href="#" class="sidebar-footer-link"><i class="fa-solid fa-user-plus"></i> Create Account</a>
+    </div>
+</aside>
+
+<!-- Search Overlay -->
+<div class="search-overlay" id="searchOverlay">
+    <div class="search-container">
+        <button class="search-close" id="searchClose"><i class="fa-solid fa-xmark"></i></button>
+        <form class="search-form" id="searchForm">
+            <input type="text" placeholder="Search for products..." class="search-input" id="searchInput" autocomplete="off">
+            <button type="submit" class="search-submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </div>
+</div>
+
+<!-- ==================== MAIN CONTENT ==================== -->
+<main class="main-content">
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Hero Slider -->
+    <section class="rotating-hero" id="rotatingHero">
+        <div class="hero-slide active">
+            <div class="slide-bg-img" style="background-image: url('/static/img/background1.jpeg');"></div>
+            <div class="slide-model"><img src="/static/img/model1.png" alt="Model 1"></div>
+            <div class="slide-content">
+                <h1 class="hero-title">AURA COLLECTION</h1>
+                <p class="hero-subtitle">Elevate your everyday style with premium quality.</p>
+                <a href="#featured-products" class="btn-hero-cta">SHOP THE LOOK</a>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <div class="slide-bg-img" style="background-image: url('/static/img/background2.jpeg');"></div>
+            <div class="slide-model"><img src="/static/img/model2.png" alt="Model 2"></div>
+            <div class="slide-content">
+                <h1 class="hero-title">MODERN CLASSICS</h1>
+                <p class="hero-subtitle">Redefining contemporary menswear for the modern gentleman.</p>
+                <a href="#featured-products" class="btn-hero-cta">DISCOVER MORE</a>
+            </div>
+        </div>
+        <div class="hero-slide">
+            <div class="slide-bg-img" style="background-image: url('/static/img/background3.jpeg');"></div>
+            <div class="slide-model"><img src="/static/img/model3.png" alt="Model 3"></div>
+            <div class="slide-content">
+                <h1 class="hero-title">URBAN ESSENTIALS</h1>
+                <p class="hero-subtitle">Versatile pieces designed for your dynamic lifestyle.</p>
+                <a href="#featured-products" class="btn-hero-cta">EXPLORE NOW</a>
+            </div>
+        </div>
+        <div class="slider-nav">
+            <button class="slider-arrow slider-prev" id="rotSliderPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="slider-arrow slider-next" id="rotSliderNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Shop By Collection -->
+    <section class="collections-section container" id="collections">
+        <div class="section-title text-center animate-on-scroll">
+            <h2>SHOP BY COLLECTION</h2>
+            <div class="title-underline"></div>
+        </div>
+        <div class="collection-grid">
+            <div class="collection-card animate-on-scroll delay-100">
+                <a href="#featured-products">
+                    <img src="/static/img/easternwear.webp" alt="Eastern Wear">
+                    <div class="collection-info"><h3>EASTERN WEAR</h3><span>Explore</span></div>
+                </a>
+            </div>
+            <div class="collection-card animate-on-scroll delay-200">
+                <a href="#featured-products">
+                    <img src="/static/img/formalwear.jpg" alt="Formal">
+                    <div class="collection-info"><h3>FORMAL</h3><span>Explore</span></div>
+                </a>
+            </div>
+            <div class="collection-card animate-on-scroll delay-300">
+                <a href="#featured-products">
+                    <img src="/static/img/casualwear.png" alt="Casual Wear">
+                    <div class="collection-info"><h3>CASUAL WEAR</h3><span>Explore</span></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products from API -->
+    <section id="featured-products" class="featured-section container">
+        <div class="section-title text-center animate-on-scroll">
+            <h2>OUR PRODUCTS</h2>
+            <div class="title-underline"></div>
+        </div>
+        <div class="product-grid" id="productGrid">
+            <div class="empty-state"><p>Loading products from API...</p></div>
+        </div>
+        <div class="view-all-btn-container text-center animate-on-scroll">
+            <button class="btn-outline" id="refreshProducts">REFRESH PRODUCTS</button>
+        </div>
+    </section>
+
+    <!-- Promo Banner -->
+    <section class="promo-banner animate-on-scroll">
+        <div class="promo-content">
+            <h2>ESSENTIAL BASICS</h2>
+            <p>Stock up on everyday essentials crafted from premium organic cotton.</p>
+            <a href="#featured-products" class="btn-primary">DISCOVER MORE</a>
+        </div>
+    </section>
+</main>
+
+<!-- Social / Footer Videos -->
+<section class="social-section">
+    <div class="social-header container">
+        <h2>Follow Us on Instagram</h2>
+        <a href="#" class="btn-instagram"><i class="fa-brands fa-instagram"></i> @aura_menswear</a>
+    </div>
+    <div class="footer-videos">
+        <video src="/static/img/footer1.mp4" autoplay muted loop playsinline></video>
+        <video src="/static/img/footer2.mp4" autoplay muted loop playsinline></video>
+        <video src="/static/img/footer3.mp4" autoplay muted loop playsinline></video>
+        <video src="/static/img/footer4.mp4" autoplay muted loop playsinline></video>
+    </div>
+</section>
+
+<!-- Newsletter -->
+<section class="newsletter-section" id="newsletter">
+    <div class="container text-center">
+        <h2>Subscribe to our Newsletter</h2>
+        <p>Get the latest updates on new arrivals, exclusive offers, and more.</p>
+        <form class="newsletter-form" id="newsletterForm">
+            <input type="email" placeholder="Your email address" required id="newsletterEmail">
+            <button type="submit" class="btn-primary">Subscribe</button>
+        </form>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="footer-content container">
+        <div class="footer-brand">
+            <h2>AURA.</h2>
+            <p>Elevating men's fashion with timeless pieces and sustainable practices.</p>
+        </div>
+        <div class="footer-links">
+            <div class="link-column">
+                <h3>Shop</h3>
+                <a href="#">New Arrivals</a>
+                <a href="#">Best Sellers</a>
+                <a href="#">Collections</a>
+            </div>
+            <div class="link-column">
+                <h3>Company</h3>
+                <a href="#">About Us</a>
+                <a href="#">Sustainability</a>
+                <a href="#">Careers</a>
+            </div>
+            <div class="link-column">
+                <h3>Support</h3>
+                <a href="#">Contact Us</a>
+                <a href="#">Shipping & Returns</a>
+                <a href="#">FAQ</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom container">
+        <p>&copy; 2026 AURA Menswear. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // =========== API BASE URL ===========
+    const API_BASE = window.location.origin;
+
+    // =========== SIDEBAR ===========
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarClose = document.getElementById('sidebarClose');
+
+    function openSidebar() { sidebar.classList.add('active'); sidebarOverlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeSidebar() { sidebar.classList.remove('active'); sidebarOverlay.classList.remove('active'); document.body.style.overflow = ''; }
+
+    if (sidebarToggle) sidebarToggle.addEventListener('click', openSidebar);
+    if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+
+    // =========== SEARCH OVERLAY ===========
+    const searchToggle = document.getElementById('searchToggle');
+    const searchOverlay = document.getElementById('searchOverlay');
+    const searchClose = document.getElementById('searchClose');
+    const searchInput = document.getElementById('searchInput');
+
+    function openSearch() { searchOverlay.classList.add('active'); document.body.style.overflow = 'hidden'; setTimeout(() => { if (searchInput) searchInput.focus(); }, 300); }
+    function closeSearch() { searchOverlay.classList.remove('active'); document.body.style.overflow = ''; }
+
+    if (searchToggle) searchToggle.addEventListener('click', openSearch);
+    if (searchClose) searchClose.addEventListener('click', closeSearch);
+    if (searchOverlay) searchOverlay.addEventListener('click', (e) => { if (e.target === searchOverlay) closeSearch(); });
+
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeSearch(); closeSidebar(); } });
+
+    // =========== SEARCH FORM ===========
+    const searchForm = document.getElementById('searchForm');
+    if (searchForm) {
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if (query) { showToast(`Searching for "${query}"...`, 'info'); closeSearch(); }
+        });
+    }
+
+    // =========== HERO SLIDER ===========
+    const slides = document.querySelectorAll('.hero-slide');
+    const prevBtn = document.getElementById('rotSliderPrev');
+    const nextBtn = document.getElementById('rotSliderNext');
+    let currentSlide = 0;
+    let autoSlideTimer;
+
+    function goToSlide(index) {
+        if (slides.length === 0) return;
+        slides[currentSlide].classList.remove('active');
+        slides[currentSlide].classList.add('exit');
+        const prev = slides[currentSlide];
+        setTimeout(() => prev.classList.remove('exit'), 1400);
+        currentSlide = (index + slides.length) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    function startAutoSlide() { autoSlideTimer = setInterval(() => goToSlide(currentSlide + 1), 6000); }
+    function resetAutoSlide() { clearInterval(autoSlideTimer); startAutoSlide(); }
+
+    if (slides.length > 0) {
+        if (nextBtn) nextBtn.addEventListener('click', () => { goToSlide(currentSlide + 1); resetAutoSlide(); });
+        if (prevBtn) prevBtn.addEventListener('click', () => { goToSlide(currentSlide - 1); resetAutoSlide(); });
+        startAutoSlide();
+    }
+
+    // =========== THEME TOGGLE ===========
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('aura-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcons(savedTheme);
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('aura-theme', next);
+            updateThemeIcons(next);
+        });
+    }
+
+    function updateThemeIcons(theme) {
+        document.querySelectorAll('.theme-icon-light').forEach(i => i.style.display = theme === 'dark' ? 'none' : 'inline');
+        document.querySelectorAll('.theme-icon-dark').forEach(i => i.style.display = theme === 'dark' ? 'inline' : 'none');
+        if (themeToggle) { const span = themeToggle.querySelector('span'); if (span) span.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode'; }
+    }
+
+    // =========== TOAST ===========
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `<span>${message}</span><button class="toast-close" onclick="this.parentElement.remove()">&times;</button>`;
+        container.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(40px)'; setTimeout(() => toast.remove(), 400); }, 3500);
+    }
+
+    // =========== SCROLL REVEAL ===========
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+    // =========== API: HEALTH CHECK ===========
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+
+    fetch(API_BASE + '/health')
+        .then(r => r.json())
+        .then(data => {
+            statusDot.classList.add('online');
+            statusText.textContent = 'API Online';
+            showToast('Backend API is connected and healthy!', 'success');
+        })
+        .catch(() => {
+            statusDot.classList.add('offline');
+            statusText.textContent = 'API Offline';
+            showToast('Could not connect to backend API', 'error');
+        });
+
+    // =========== API: LOAD PRODUCTS ===========
+    const productGrid = document.getElementById('productGrid');
+    const productImages = ['/static/img/hero1.webp', '/static/img/hero2.webp', '/static/img/hero4.webp', '/static/img/hero5.webp'];
+
+    function loadProducts() {
+        productGrid.innerHTML = '<div class="empty-state"><p>Loading products...</p></div>';
+        fetch(API_BASE + '/api/products')
+            .then(r => r.json())
+            .then(data => {
+                const products = data.products || [];
+                if (products.length === 0) {
+                    productGrid.innerHTML = '<div class="empty-state"><p>No products available.</p></div>';
+                    return;
+                }
+                productGrid.innerHTML = '';
+                products.forEach((product, i) => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card animate-on-scroll';
+                    card.style.transitionDelay = `${(i + 1) * 100}ms`;
+                    card.innerHTML = `
+                        <div class="product-image-wrap">
+                            <img src="${productImages[i % productImages.length]}" alt="${product.name}" loading="lazy">
+                            <div class="quick-view"><span>QUICK VIEW</span></div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${product.name}</h3>
+                            <div class="product-price-wrap">
+                                <span class="product-price">$${product.price.toFixed(2)}</span>
+                            </div>
+                            <p style="font-size:0.75rem;color:var(--text-secondary);margin-top:4px;">${product.category}</p>
+                        </div>`;
+                    productGrid.appendChild(card);
+                });
+                // Re-observe new elements
+                document.querySelectorAll('.product-card.animate-on-scroll').forEach(el => observer.observe(el));
+            })
+            .catch(() => {
+                productGrid.innerHTML = '<div class="empty-state"><p>Failed to load products from API. Is the backend running?</p></div>';
+            });
+    }
+
+    loadProducts();
+
+    const refreshBtn = document.getElementById('refreshProducts');
+    if (refreshBtn) refreshBtn.addEventListener('click', () => { loadProducts(); showToast('Products refreshed!', 'info'); });
+
+    // =========== NEWSLETTER FORM (POST to API) ===========
+    const newsletterForm = document.getElementById('newsletterForm');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('newsletterEmail').value;
+            fetch(API_BASE + '/api/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: 'Newsletter Subscriber', price: 0, category: email })
+            })
+            .then(r => r.json())
+            .then(() => { showToast('Thank you for subscribing!', 'success'); newsletterForm.reset(); })
+            .catch(() => showToast('Subscription failed. Try again later.', 'error'));
+        });
+    }
+});
+</script>
+
+</body>
+</html>
