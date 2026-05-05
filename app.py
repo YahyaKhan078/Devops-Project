@@ -19,7 +19,9 @@ next_product_id = 6   # auto-increment counter
 cart   = []   # list of {id, product_id, name, price, quantity}
 next_cart_id = 1
 
-
+@app.route('/')
+def home():
+    return {"message": "Aura Flask API is running"}, 200
 # ---------------------------------------------------------------------------
 # 1. Health Check  ← required by the project spec
 # ---------------------------------------------------------------------------
