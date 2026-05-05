@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title_block %}Your Orders | AURA{% endblock %}
+
+{% block body_block %}
+<section class="orders-page container">
+    <div class="orders-header">
+        <h1>Your Orders</h1>
+        <p class="orders-subtitle">View all your past purchases</p>
+    </div>
+
+    {% if orders %}
+        {% for order in orders %}
+        <div class="profile-order-card">
+            <div class="order-card-header">
+                <div>
+                    <strong class="order-id">ORD-{{ order.created|date:"U" }}</strong>
+                    <span class="order-meta">{{ order.created|date:"M d, Y" }} · {{ order.items.count }} item{{ order.items.count|pluralize }}</span>
+                </div>
+                <div class="order-status-badge">Completed</div>
+            </div>
+            <div class="order-products-preview">
+                {% for item in order.items.all %}
+                <div class="order-product-thumb">
+                    {% if item.product.mainimage %}
+                        <img src="{{ item.product.mainimage.url }}" alt="{{ item.product.name }}">
+                    {% else %}
+                        <div class="thumb-placeholder"><i class="fa-solid fa-shirt"></i></div>
+                    {% endif %}
+                    <div class="order-product-info">
+                        <span class="order-product-name">{{ item.product.name }}</span>
+                        <span class="order-product-qty">Qty: {{ item.quantity }} · &#2547; {{ item.price }}</span>
+                    </div>
+                    <span class="order-item-total">&#2547; {{ item.get_total }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="order-card-footer">
+                <span>Order Total</span>
+                <strong class="order-footer-total" data-order="{{ order.pk }}">&#2547; 0</strong>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-orders">
+            <i class="fa-solid fa-box-open"></i>
+            <p>No orders found.</p>
+            <a href="{% url 'App_Shop:home' %}" class="btn-primary">START SHOPPING</a>
+        </div>
+    {% endif %}
+
+    <div style="text-align:center; margin-top:40px;">
+        <a href="{% url 'App_Shop:home' %}" class="btn-outline">BACK TO HOME</a>
+    </div>
+</section>
+
+<style>
+.orders-page { padding: 40px 20px 80px; }
+.orders-header { margin-bottom: 40px; }
+.orders-header h1 { font-size: 2.4rem; letter-spacing: 2px; margin-bottom: 6px; }
+.orders-subtitle { color: var(--text-secondary); font-size: 0.95rem; }
+
+.profile-order-card {
+    border: 1px solid var(--border-color); border-radius: 6px;
+    margin-bottom: 16px; overflow: hidden; transition: border-color 0.2s ease;
+}
+.profile-order-card:hover { border-color: rgba(255,255,255,0.2); }
+.order-card-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 24px; background-color: var(--bg-surface);
+}
+.order-id { font-size: 0.95rem; font-weight: 600; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+.order-meta { font-size: 0.82rem; color: var(--text-secondary); }
+.order-status-badge {
+    background-color: rgba(46, 204, 113, 0.12); color: #2ecc71;
+    padding: 4px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.5px;
+}
+.order-products-preview { padding: 0 24px; }
+.order-product-thumb {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 0; border-top: 1px solid var(--border-color);
+}
+.order-product-thumb img { width: 56px; height: 70px; object-fit: cover; border-radius: 4px; background-color: var(--bg-surface); }
+.thumb-placeholder {
+    width: 56px; height: 70px; background-color: var(--bg-surface); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center; color: var(--text-secondary); font-size: 1.2rem;
+}
+.order-product-info { flex-grow: 1; display: flex; flex-direction: column; gap: 3px; }
+.order-product-name { font-size: 0.9rem; font-weight: 500; }
+.order-product-qty { font-size: 0.8rem; color: var(--text-secondary); }
+.order-item-total { font-weight: 600; font-size: 0.95rem; white-space: nowrap; }
+
+.order-card-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 24px; background-color: var(--bg-surface); border-top: 1px solid var(--border-color); font-size: 0.95rem;
+}
+.order-card-footer span { color: var(--text-secondary); }
+
+.empty-orders { text-align: center; padding: 60px 20px; border: 1px solid var(--border-color); border-radius: 6px; }
+.empty-orders i { font-size: 2.5rem; color: var(--text-secondary); margin-bottom: 16px; }
+.empty-orders p { color: var(--text-secondary); margin-bottom: 24px; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.profile-order-card').forEach(card => {
+        const totals = card.querySelectorAll('.order-item-total');
+        let sum = 0;
+        totals.forEach(el => {
+            const v = parseFloat(el.textContent.replace(/[^\d.]/g, ''));
+            if (!isNaN(v)) sum += v;
+        });
+        const footer = card.querySelector('.order-card-footer strong');
+        if (footer) footer.textContent = '৳ ' + sum.toFixed(2);
+    });
+});
+</script>
+{% endblock %}

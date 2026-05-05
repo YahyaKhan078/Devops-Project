@@ -1,0 +1,180 @@
+{% load cart_tag %}
+
+<!-- Top Bar -->
+<header class="site-header">
+    <div class="nav-container">
+        <!-- Left: Hamburger Menu -->
+        <div class="nav-left">
+            <button class="menu-toggle" id="sidebarToggle" aria-label="Open menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+
+        <!-- Center: Brand -->
+        <a class="nav-brand" href="{% url 'App_Shop:home' %}">AURA</a>
+
+        <!-- Right: Actions -->
+        <div class="nav-right">
+            <button class="nav-icon" id="searchToggle" aria-label="Search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span class="icon-label">SEARCH</span>
+            </button>
+
+            {% if request.user.is_authenticated %}
+            <div class="user-dropdown">
+                <button class="nav-icon user-toggle" id="userToggle">
+                    <i class="fa-regular fa-user"></i>
+                    <span class="icon-label">ACCOUNT</span>
+                </button>
+                <div class="dropdown-content" id="dropdownContent">
+                    <div class="dropdown-header">
+                        Hi, {{ request.user.profile.username|default:request.user.username }}
+                    </div>
+                    <a href="{% url 'App_Login:profile' %}" class="dropdown-item">Profile</a>
+                    <a href="{% url 'App_Order:cart' %}" class="dropdown-item">My Cart</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{% url 'App_Login:logout' %}" class="dropdown-item">Logout</a>
+                </div>
+            </div>
+            <button class="nav-icon" id="cartSidebarToggle" title="Cart">
+                <i class="fa-solid fa-bag-shopping"></i>
+                {% if request.user|cart_total > 0 %}
+                    <span class="cart-badge">{{ request.user|cart_total }}</span>
+                {% endif %}
+            </button>
+            {% else %}
+            <a href="{% url 'App_Login:login' %}" class="nav-icon">
+                <span class="icon-label">LOGIN</span>
+            </a>
+            <a href="{% url 'App_Login:login' %}" class="nav-icon" title="Cart">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <span class="sidebar-title">MENU</span>
+        <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="{% url 'App_Shop:home' %}" class="sidebar-link">Home</a>
+        
+        <!-- Collections Accordion -->
+        <div class="sidebar-accordion">
+            <button class="sidebar-link accordion-toggle" id="collectionsToggle" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer; font-family: inherit; font-size: inherit; color: inherit;">
+                Collections
+                <i class="fa-solid fa-chevron-down accordion-icon"></i>
+            </button>
+            <div class="accordion-content" id="collectionsContent">
+                <a href="{% url 'App_Shop:search' %}?q=eastern" class="sidebar-sublink">Eastern Wear</a>
+                <a href="{% url 'App_Shop:search' %}?q=formal" class="sidebar-sublink">Formal</a>
+                <a href="{% url 'App_Shop:search' %}?q=casual" class="sidebar-sublink">Casual Wear</a>
+            </div>
+        </div>
+
+        <a href="{% url 'App_Shop:search' %}?q=" class="sidebar-link">New Arrivals</a>
+        <a href="{% url 'App_Shop:search' %}?q=" class="sidebar-link">Best Sellers</a>
+        <a href="{% url 'App_Shop:about' %}" class="sidebar-link">About Us</a>
+        <a href="{% url 'App_Shop:contact' %}" class="sidebar-link">Contact Us</a>
+
+        <button class="sidebar-link" id="themeToggle" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: inherit; font-family: inherit; font-size: inherit; padding: 15px 30px;">
+            <span>Dark Mode</span>
+            <div>
+                <i class="fa-solid fa-sun theme-icon-light" style="display:none;"></i>
+                <i class="fa-solid fa-moon theme-icon-dark"></i>
+            </div>
+        </button>
+
+        <div class="sidebar-divider"></div>
+
+        {% if request.user.is_authenticated %}
+        <button class="sidebar-link" id="sidebarCartOpen" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer; font-family: inherit; font-size: inherit; color: inherit;">
+            My Cart
+            {% if request.user|cart_total > 0 %}
+                <span class="sidebar-badge">{{ request.user|cart_total }}</span>
+            {% endif %}
+        </button>
+        <a href="{% url 'App_Login:profile' %}" class="sidebar-link">My Profile</a>
+        {% endif %}
+    </nav>
+
+    <div class="sidebar-footer">
+        {% if request.user.is_authenticated %}
+            <div class="sidebar-user-info">
+                <i class="fa-regular fa-user"></i>
+                <span>{{ request.user.username }}</span>
+            </div>
+            <a href="{% url 'App_Login:logout' %}" class="sidebar-footer-link">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        {% else %}
+            <a href="{% url 'App_Login:login' %}" class="sidebar-footer-link">
+                <i class="fa-regular fa-user"></i> Login
+            </a>
+            <a href="{% url 'App_Login:signup' %}" class="sidebar-footer-link">
+                <i class="fa-solid fa-user-plus"></i> Create Account
+            </a>
+        {% endif %}
+    </div>
+</aside>
+
+<!-- Cart Sidebar Overlay -->
+<div class="cart-sidebar-overlay" id="cartSidebarOverlay"></div>
+
+<!-- Cart Sidebar -->
+<aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-sidebar-header">
+        <div>
+            <span class="cart-sidebar-label">YOUR BAG</span>
+            <span class="cart-sidebar-count" id="cartSidebarCount">0 items</span>
+        </div>
+        <button class="cart-sidebar-close" id="cartSidebarClose" aria-label="Close cart">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <div class="cart-sidebar-items" id="cartSidebarItems">
+        <!-- Items loaded via JS -->
+        <div class="cart-sidebar-empty" id="cartSidebarEmpty">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <p>Your bag is empty</p>
+            <a href="{% url 'App_Shop:home' %}" class="btn-outline" style="margin-top:12px;">CONTINUE SHOPPING</a>
+        </div>
+    </div>
+
+    <div class="cart-sidebar-footer" id="cartSidebarFooter" style="display:none;">
+        <div class="cart-sidebar-subtotal">
+            <span class="subtotal-label">SUBTOTAL</span>
+            <span class="subtotal-amount" id="cartSubtotal">$0</span>
+        </div>
+        <p class="cart-sidebar-note">Shipping & taxes calculated at checkout.</p>
+        <a href="{% url 'App_Order:cart' %}" class="btn-primary btn-block cart-checkout-btn">CHECKOUT</a>
+        <a href="{% url 'App_Shop:home' %}" class="cart-continue-link">CONTINUE SHOPPING</a>
+    </div>
+</aside>
+
+<!-- Search Overlay -->
+<div class="search-overlay" id="searchOverlay">
+    <div class="search-container">
+        <button class="search-close" id="searchClose">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <form action="{% url 'App_Shop:search' %}" method="GET" class="search-form">
+            <input type="text" name="q" placeholder="Search for products..." class="search-input" id="searchInput" autocomplete="off">
+            <button type="submit" class="search-submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+    </div>
+</div>

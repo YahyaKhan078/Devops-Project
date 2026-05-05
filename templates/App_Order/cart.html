@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title_block %}Your Cart | AURA{% endblock %}
+
+{% block body_block %}
+<section class="cart-page container">
+    <div class="cart-header">
+        <h1>Your Cart</h1>
+        <p class="cart-count">{{ carts|length }} item{{ carts|length|pluralize }}</p>
+    </div>
+
+    <div class="cart-layout">
+        <!-- Cart Items -->
+        <div class="cart-items">
+            {% for cart in carts %}
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    {% if cart.item.mainimage %}
+                        <img src="{{ cart.item.mainimage.url }}" alt="{{ cart.item.name }}">
+                    {% else %}
+                        <img src="{% static 'img/placeholder.svg' %}" alt="Placeholder">
+                    {% endif %}
+                </div>
+                <div class="cart-item-details">
+                    <a href="{% url 'App_Shop:product_detail' pk=cart.item.pk %}">
+                        <h3 class="cart-item-name">{{ cart.item.name }}</h3>
+                    </a>
+                    <p class="cart-item-price">&#2547; {{ cart.item.price }}</p>
+
+                    <div class="cart-qty-controls">
+                        <a href="{% url 'App_Order:decrease' pk=cart.item.pk %}" class="qty-btn">
+                            <i class="fa-solid fa-minus"></i>
+                        </a>
+                        <span class="qty-value">{{ cart.quantity }}</span>
+                        <a href="{% url 'App_Order:increase' pk=cart.item.pk %}" class="qty-btn">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="cart-item-actions">
+                    <p class="cart-item-total">&#2547; {{ cart.get_total }}</p>
+                    <a href="{% url 'App_Order:remove' pk=cart.item.pk %}" class="remove-btn" title="Remove">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="cartSubtotalCalc">&#2547; 0</span>
+            </div>
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span class="free-shipping">FREE</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-actions">
+                <a href="{% url 'App_Shop:home' %}" class="btn-outline btn-block">CONTINUE SHOPPING</a>
+                <a href="{% url 'App_Order:purchase' %}" class="btn-primary btn-block">PROCEED TO CHECKOUT</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.cart-page {
+    padding: 40px 20px 80px;
+}
+.cart-header {
+    margin-bottom: 40px;
+}
+.cart-header h1 {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+.cart-count {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+.cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 40px;
+    align-items: start;
+}
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.cart-item {
+    display: flex;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border-color);
+    align-items: flex-start;
+}
+.cart-item:first-child {
+    border-top: 1px solid var(--border-color);
+}
+.cart-item-image {
+    width: 120px;
+    height: 150px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: var(--bg-surface);
+}
+.cart-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.cart-item-details {
+    flex-grow: 1;
+}
+.cart-item-name {
+    font-family: var(--font-primary);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+.cart-item-price {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+.cart-qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: fit-content;
+}
+.qty-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    transition: background-color 0.2s ease;
+}
+.qty-btn:hover {
+    background-color: rgba(255,255,255,0.05);
+    color: var(--text-primary);
+}
+.qty-value {
+    width: 40px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    line-height: 36px;
+}
+.cart-item-actions {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+}
+.cart-item-total {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+.remove-btn {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+.remove-btn:hover {
+    color: #e74c3c;
+}
+
+/* Summary */
+.cart-summary {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 32px 28px;
+    position: sticky;
+    top: 80px;
+}
+.cart-summary h3 {
+    font-family: var(--font-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    font-size: 0.95rem;
+}
+.free-shipping {
+    color: #2ecc71;
+    font-weight: 500;
+}
+.summary-divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 20px 0;
+}
+.summary-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.btn-block {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 14px 20px;
+}
+
+@media (max-width: 768px) {
+    .cart-layout {
+        grid-template-columns: 1fr;
+    }
+    .cart-item-image {
+        width: 80px;
+        height: 100px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const totals = document.querySelectorAll('.cart-item-total');
+    let subtotal = 0;
+    totals.forEach(el => {
+        const val = parseFloat(el.textContent.replace(/[^\d.]/g, ''));
+        if (!isNaN(val)) subtotal += val;
+    });
+    const sub = document.getElementById('cartSubtotalCalc');
+    if (sub) sub.textContent = '৳ ' + subtotal.toFixed(2);
+});
+</script>
+{% endblock %}

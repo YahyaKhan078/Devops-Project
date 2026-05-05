@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title_block %}Contact Us | AURA{% endblock %}
+
+{% block body_block %}
+<section class="contact-page container">
+    <div class="contact-header animate-on-scroll">
+        <h1>Contact Us</h1>
+    </div>
+
+    <div class="contact-layout">
+        <!-- Contact Form -->
+        <div class="contact-form-section animate-on-scroll">
+            <h3 class="form-section-title">SEND A MESSAGE</h3>
+            <form method="POST" class="contact-form">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name*</label>
+                        <input type="text" name="name" id="name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email*</label>
+                        <input type="email" name="email" id="email" class="form-input" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message*</label>
+                    <textarea name="message" id="message" class="form-input form-textarea" rows="6" required></textarea>
+                </div>
+                <button type="submit" class="btn-contact-submit">Send message</button>
+            </form>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="contact-info-section animate-on-scroll delay-200">
+            <div class="contact-info-card">
+                <i class="fa-solid fa-phone"></i>
+                <div>
+                    <h4>Call Us</h4>
+                    <p>+92-321-7040999</p>
+                    <p class="info-sub">Mon-Sat: 10:00am - 5:00pm</p>
+                </div>
+            </div>
+            <div class="contact-info-card">
+                <i class="fa-solid fa-envelope"></i>
+                <div>
+                    <h4>Mail Us</h4>
+                    <p>basiljosephgjms123456@gmail.com</p>
+                </div>
+            </div>
+            <div class="contact-info-card">
+                <i class="fa-solid fa-location-dot"></i>
+                <div>
+                    <h4>Visit Us</h4>
+                    <p>Faisalabad, Pakistan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.contact-page {
+    padding: 40px 20px 80px;
+}
+.contact-header {
+    margin-bottom: 50px;
+}
+.contact-header h1 {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+}
+.contact-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 60px;
+    align-items: start;
+}
+.form-section-title {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.form-group label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+.form-input {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 14px 16px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: var(--font-primary);
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+.form-input:focus {
+    border-color: var(--accent-color);
+}
+.form-textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+.btn-contact-submit {
+    align-self: flex-start;
+    padding: 14px 32px;
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    transition: all 0.3s ease;
+}
+.btn-contact-submit:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
+}
+
+.contact-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-top: 20px;
+}
+.contact-info-card {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 24px;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+.contact-info-card i {
+    font-size: 1.3rem;
+    color: var(--accent-color);
+    margin-top: 4px;
+}
+.contact-info-card h4 {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+.contact-info-card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+.info-sub {
+    font-size: 0.8rem !important;
+    margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+    .contact-layout {
+        grid-template-columns: 1fr;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}

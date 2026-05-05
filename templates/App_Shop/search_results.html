@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title_block %}Search | AURA{% endblock %}
+
+{% block body_block %}
+<section class="search-page-container container">
+    <div class="search-header text-center">
+        <h1>SEARCH</h1>
+    </div>
+
+    <!-- Search Input Area -->
+    <div class="search-input-wrapper">
+        <form action="{% url 'App_Shop:search' %}" method="GET" class="zellbury-search-form">
+            <input type="text" name="q" value="{{ query }}" placeholder="Search" class="zellbury-search-input" autofocus>
+            <button type="submit" class="zellbury-search-btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+    </div>
+
+    <!-- Empty Search State -->
+    {% if not query and not category_id %}
+    <div class="popular-searches">
+        <h3>Popular Searches</h3>
+        <div class="search-tags">
+            <a href="{% url 'App_Shop:search' %}?q=chinos" class="search-tag">chinos</a>
+            <a href="{% url 'App_Shop:search' %}?q=t-shirt" class="search-tag">men t-shirt</a>
+            <a href="{% url 'App_Shop:search' %}?q=polos" class="search-tag">signature polos</a>
+            <a href="{% url 'App_Shop:search' %}?q=kurta" class="search-tag">men kurta</a>
+            <a href="{% url 'App_Shop:search' %}?q=shalwar" class="search-tag">shalwar kameez</a>
+            <a href="{% url 'App_Shop:search' %}?q=trouser" class="search-tag">trouser</a>
+            <a href="{% url 'App_Shop:search' %}?q=jeans" class="search-tag">jeans</a>
+            <a href="{% url 'App_Shop:search' %}?q=jacket" class="search-tag">jacket</a>
+        </div>
+    </div>
+
+    {% if interested %}
+    <div class="interested-in">
+        <h3>You might be interested in</h3>
+        <div class="product-grid">
+            {% for product in interested %}
+                {% include 'App_Shop/partials/product_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <!-- Search Results State -->
+    
+    {% if products %}
+    <div class="search-results-section">
+        {% if query %}
+            <h3 class="results-heading">Showing results for "{{ query }}"</h3>
+        {% else %}
+            <h3 class="results-heading">Collection Results</h3>
+        {% endif %}
+        
+        <div class="product-grid">
+            {% for product in products %}
+                {% include 'App_Shop/partials/product_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    {% elif query %}
+    <div class="empty-search-results text-center">
+        <p>No products found for "{{ query }}". Try checking your spelling or searching for something else.</p>
+    </div>
+    {% endif %}
+
+    {% if remaining %}
+    <div class="remaining-results-section">
+        <h3 class="results-heading" style="margin-top: 60px;">Explore More Products</h3>
+        <div class="product-grid">
+            {% for product in remaining %}
+                {% include 'App_Shop/partials/product_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+</section>
+
+<style>
+.search-page-container {
+    padding: 60px 20px 100px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.search-header h1 {
+    font-family: var(--font-primary);
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+    margin-bottom: 40px;
+}
+
+.search-input-wrapper {
+    margin-bottom: 50px;
+}
+
+.zellbury-search-form {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.zellbury-search-input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    font-family: var(--font-primary);
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    outline: none;
+    padding: 5px 0;
+}
+
+.zellbury-search-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.zellbury-search-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.zellbury-search-btn:hover {
+    color: var(--text-primary);
+}
+
+.popular-searches {
+    margin-bottom: 60px;
+}
+
+.popular-searches h3, .interested-in h3, .results-heading {
+    font-family: var(--font-primary);
+    font-weight: 400;
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+}
+
+.search-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.search-tag {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.search-tag:hover {
+    background-color: var(--text-primary);
+    color: var(--bg-primary);
+    border-color: var(--text-primary);
+}
+
+.empty-search-results p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin: 40px 0;
+}
+
+</style>
+{% endblock %}

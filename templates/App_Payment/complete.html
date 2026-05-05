@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title_block %}Payment Status | AURA{% endblock %}
+
+{% block body_block %}
+<section class="complete-page container" style="padding: 80px 20px; text-align: center; min-height: 50vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <i class="fa-solid fa-circle-check" style="font-size: 3rem; color: #2ecc71; margin-bottom: 20px;"></i>
+    <h1 style="font-size: 2rem; letter-spacing: 2px; margin-bottom: 10px;">Thank You!</h1>
+    <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 30px;">Your payment status has been recorded. You will be redirected shortly.</p>
+    <a href="{% url 'App_Shop:home' %}" class="btn-primary">CONTINUE SHOPPING</a>
+</section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% load static %}
+<div class="product-card">
+    <a href="{% url 'App_Shop:product_detail' pk=product.pk %}">
+        <div class="product-image-wrap">
+            {% if product.mainimage %}
+                <img src="{{ product.mainimage.url }}" alt="{{ product.name }}" loading="lazy">
+            {% else %}
+                <img src="{% static 'img/placeholder.svg' %}" alt="Placeholder" loading="lazy">
+            {% endif %}
+            <div class="quick-view"><span>QUICK VIEW</span></div>
+        </div>
+    </a>
+    <div class="product-info zellbury-style">
+        <a href="{% url 'App_Shop:product_detail' pk=product.pk %}">
+            <h3 class="product-title">{{ product.name }}</h3>
+        </a>
+        <div class="product-price-wrap">
+            <span class="product-price">&#2547; {{ product.price }}</span>
+            {% if product.old_price > 0 %}
+                <span class="product-old-price">&#2547; {{ product.old_price }}</span>
+            {% endif %}
+        </div>
+    </div>
+</div>

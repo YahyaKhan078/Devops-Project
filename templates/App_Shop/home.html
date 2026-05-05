@@ -1,0 +1,540 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_block %}
+
+<!-- Custom Rotating Hero Slider -->
+<section class="rotating-hero" id="rotatingHero">
+    <!-- Slide 1 -->
+    <div class="hero-slide active">
+        <div class="slide-bg-img" style="background-image: url('{% static 'img/background1.jpeg' %}');"></div>
+        <div class="slide-model">
+            <img src="{% static 'img/model1.png' %}" alt="Model 1">
+        </div>
+        <div class="slide-content">
+            <h1 class="hero-title">AURA COLLECTION</h1>
+            <p class="hero-subtitle">Elevate your everyday style with premium quality.</p>
+            <a href="{% url 'App_Shop:search' %}?q=" class="btn-hero-cta">SHOP THE LOOK</a>
+        </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="hero-slide">
+        <div class="slide-bg-img" style="background-image: url('{% static 'img/background2.jpeg' %}');"></div>
+        <div class="slide-model">
+            <img src="{% static 'img/model2.png' %}" alt="Model 2">
+        </div>
+        <div class="slide-content">
+            <h1 class="hero-title">MODERN CLASSICS</h1>
+            <p class="hero-subtitle">Redefining contemporary menswear for the modern gentleman.</p>
+            <a href="{% url 'App_Shop:search' %}?q=" class="btn-hero-cta">DISCOVER MORE</a>
+        </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="hero-slide">
+        <div class="slide-bg-img" style="background-image: url('{% static 'img/background3.jpeg' %}');"></div>
+        <div class="slide-model">
+            <img src="{% static 'img/model3.png' %}" alt="Model 3">
+        </div>
+        <div class="slide-content">
+            <h1 class="hero-title">URBAN ESSENTIALS</h1>
+            <p class="hero-subtitle">Versatile pieces designed for your dynamic lifestyle.</p>
+            <a href="{% url 'App_Shop:search' %}?q=" class="btn-hero-cta">EXPLORE NOW</a>
+        </div>
+    </div>
+
+    <!-- Slider Left/Right Arrows -->
+    <div class="slider-nav">
+        <button class="slider-arrow slider-prev" id="rotSliderPrev" aria-label="Previous">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="slider-arrow slider-next" id="rotSliderNext" aria-label="Next">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </div>
+</section>
+
+<!-- Shop By Collection -->
+<section class="collections-section container">
+    <div class="section-title text-center animate-on-scroll">
+        <h2>SHOP BY COLLECTION</h2>
+        <div class="title-underline"></div>
+    </div>
+
+    <div class="collection-grid">
+        <div class="collection-card animate-on-scroll delay-100">
+            <a href="{% url 'App_Shop:search' %}?q=eastern">
+                <img src="{% static 'img/easternwear.webp' %}" alt="Eastern Wear">
+                <div class="collection-info">
+                    <h3>EASTERN WEAR</h3>
+                    <span>Explore</span>
+                </div>
+            </a>
+        </div>
+        <div class="collection-card animate-on-scroll delay-200">
+            <a href="{% url 'App_Shop:search' %}?q=formal">
+                <img src="{% static 'img/formalwear.jpg' %}" alt="Formal">
+                <div class="collection-info">
+                    <h3>FORMAL</h3>
+                    <span>Explore</span>
+                </div>
+            </a>
+        </div>
+        <div class="collection-card animate-on-scroll delay-300">
+            <a href="{% url 'App_Shop:search' %}?q=casual">
+                <img src="{% static 'img/casualwear.png' %}" alt="Casual Wear">
+                <div class="collection-info">
+                    <h3>CASUAL WEAR</h3>
+                    <span>Explore</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products Section -->
+<section id="featured-products" class="featured-section container">
+    <div class="section-title text-center animate-on-scroll">
+        <h2>NEW ARRIVALS</h2>
+        <div class="title-underline"></div>
+    </div>
+
+    <div class="product-grid">
+        {% for product in new_arrivals %}
+        <div class="product-card animate-on-scroll" style="transition-delay: {{ forloop.counter0|add:1 }}00ms;">
+            <a href="{% url 'App_Shop:product_detail' pk=product.pk %}">
+                <div class="product-image-wrap">
+                    {% if product.mainimage %}
+                    <img src="{{ product.mainimage.url }}" alt="{{ product.name }}" loading="lazy">
+                    {% else %}
+                    <img src="{% static 'img/placeholder.svg' %}" alt="Placeholder" loading="lazy">
+                    {% endif %}
+
+                    <!-- Quick view overlay on hover -->
+                    <div class="quick-view">
+                        <span>QUICK VIEW</span>
+                    </div>
+                </div>
+            </a>
+            <div class="product-info zellbury-style">
+                <a href="{% url 'App_Shop:product_detail' pk=product.pk %}">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                </a>
+                <div class="product-price-wrap">
+                    <span class="product-price">&#2547; {{ product.price }}</span>
+                    {% if product.old_price > 0 %}
+                    <span class="product-old-price">&#2547; {{ product.old_price }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state animate-on-scroll">
+            <p>No products available at the moment. Please check back later.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="view-all-btn-container text-center animate-on-scroll">
+        <a href="{% url 'App_Shop:search' %}?q=" class="btn-outline">VIEW ALL PRODUCTS</a>
+    </div>
+</section>
+
+<!-- Best Sellers Section -->
+<section id="best-sellers" class="featured-section container" style="margin-top: 60px;">
+    <div class="section-title text-center animate-on-scroll">
+        <h2>BEST SELLERS</h2>
+        <div class="title-underline"></div>
+    </div>
+
+    <div class="product-grid">
+        {% for product in best_sellers %}
+        <div class="product-card animate-on-scroll" style="transition-delay: {{ forloop.counter0|add:1 }}00ms;">
+            <a href="{% url 'App_Shop:product_detail' pk=product.pk %}">
+                <div class="product-image-wrap">
+                    {% if product.mainimage %}
+                    <img src="{{ product.mainimage.url }}" alt="{{ product.name }}" loading="lazy">
+                    {% else %}
+                    <img src="{% static 'img/placeholder.svg' %}" alt="Placeholder" loading="lazy">
+                    {% endif %}
+                    <div class="quick-view">
+                        <span>QUICK VIEW</span>
+                    </div>
+                </div>
+            </a>
+            <div class="product-info zellbury-style">
+                <a href="{% url 'App_Shop:product_detail' pk=product.pk %}">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                </a>
+                <div class="product-price-wrap">
+                    <span class="product-price">&#2547; {{ product.price }}</span>
+                    {% if product.old_price > 0 %}
+                    <span class="product-old-price">&#2547; {{ product.old_price }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Promotional Banner -->
+<section class="promo-banner animate-on-scroll">
+    <div class="promo-content">
+        <h2>ESSENTIAL BASICS</h2>
+        <p>Stock up on everyday essentials crafted from premium organic cotton.</p>
+        <a href="#" class="btn-primary">DISCOVER MORE</a>
+    </div>
+</section>
+
+
+<style>
+    /* ======================================================
+   ROTATING HERO SLIDER
+   ====================================================== */
+    .text-center {
+        text-align: center;
+    }
+
+    .rotating-hero {
+        position: relative;
+        width: 100%;
+        height: 85vh;
+        overflow: hidden;
+        background-color: #0a0a0c;
+        perspective: 1200px;
+    }
+
+    .hero-slide {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        opacity: 0; visibility: hidden;
+        transition: opacity 0.8s ease;
+        z-index: 1;
+    }
+
+    .hero-slide.active {
+        opacity: 1; visibility: visible;
+        z-index: 2;
+    }
+
+    /* Background image layer */
+    .slide-bg-img {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transform: scale(1.05); /* Start slightly zoomed in */
+        transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 1.2s;
+    }
+
+    .hero-slide.active .slide-bg-img {
+        opacity: 0.5; /* Dim the background to make text readable */
+        transform: scale(1);
+    }
+
+    .hero-slide.exit .slide-bg-img {
+        transform: scale(1.05);
+        opacity: 0;
+    }
+
+    /* Model layer */
+    .slide-model {
+        position: absolute;
+        bottom: -50px; right: 10%;
+        height: 95%;
+        z-index: 3;
+        transform-origin: bottom center;
+        transform: rotate(45deg);
+        opacity: 0;
+        transition: transform 1.4s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 1.4s;
+    }
+    
+    .slide-model img {
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .hero-slide.active .slide-model {
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+
+    .hero-slide.exit .slide-model {
+        transform: rotate(-45deg);
+        opacity: 0;
+    }
+
+    /* Content layer */
+    .slide-content {
+        position: absolute;
+        top: 50%; left: 10%;
+        transform: translateY(-50%);
+        z-index: 4;
+        max-width: 500px;
+    }
+
+    .hero-title {
+        font-family: var(--font-heading);
+        font-size: clamp(3rem, 5vw, 4.5rem);
+        color: #fff;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        opacity: 0;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        color: #ddd;
+        margin-bottom: 35px;
+        opacity: 0;
+    }
+
+    .btn-hero-cta {
+        display: inline-block;
+        padding: 16px 40px;
+        background-color: transparent;
+        color: #fff;
+        border: 1px solid #fff;
+        font-family: var(--font-primary);
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .btn-hero-cta:hover {
+        background-color: #fff;
+        color: #000;
+    }
+
+    .hero-slide.active .hero-title {
+        animation: textUp 0.8s 0.6s ease forwards;
+    }
+    .hero-slide.active .hero-subtitle {
+        animation: textUp 0.8s 0.8s ease forwards;
+    }
+    .hero-slide.active .btn-hero-cta {
+        animation: textUp 0.8s 1.0s ease forwards;
+    }
+
+    @keyframes textUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Slider Navigation Arrows */
+    .slider-nav {
+        position: absolute;
+        bottom: 50px; right: 10%;
+        display: flex;
+        gap: 15px;
+        z-index: 10;
+    }
+
+    .slider-arrow {
+        width: 50px; height: 50px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .slider-arrow:hover {
+        background-color: #fff;
+        color: #000;
+        transform: scale(1.1);
+    }
+
+    /* ======================================================
+   SECTION TITLES
+   ====================================================== */
+    .section-title {
+        margin: 60px 0 40px;
+    }
+
+    .section-title h2 {
+        font-size: 2rem;
+        letter-spacing: 2px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .title-underline {
+        width: 60px;
+        height: 3px;
+        background-color: var(--accent-color);
+        margin: 0 auto;
+    }
+
+    /* ======================================================
+   COLLECTIONS GRID
+   ====================================================== */
+    .collections-section {
+        padding: 20px 20px 60px;
+    }
+
+    .collection-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+
+    .collection-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px;
+        aspect-ratio: 3/4;
+    }
+
+    .collection-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .collection-card:hover img {
+        transform: scale(1.08);
+    }
+
+    .collection-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 30px 20px;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        text-align: center;
+    }
+
+    .collection-info h3 {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+        margin-bottom: 5px;
+    }
+
+    .collection-info span {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--accent-color);
+        position: relative;
+    }
+
+    .collection-info span::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background-color: var(--accent-color);
+        transition: width 0.3s ease;
+    }
+
+    .collection-card:hover .collection-info span::after {
+        width: 100%;
+    }
+
+    /* ======================================================
+   FEATURED PRODUCTS TWEAKS
+   ====================================================== */
+    .zellbury-style {
+        text-align: center;
+    }
+
+    .product-image-wrap .quick-view {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px 0;
+        text-align: center;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+        font-weight: 500;
+    }
+
+    .product-card:hover .quick-view {
+        transform: translateY(0);
+    }
+
+    .view-all-btn-container {
+        margin-top: 50px;
+    }
+
+    /* ======================================================
+   PROMO BANNER
+   ====================================================== */
+    .promo-banner {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url("{% static 'img/hero3.webp' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        padding: 100px 20px;
+        text-align: center;
+        margin: 60px 0;
+    }
+
+    .promo-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .promo-content h2 {
+        font-size: 3rem;
+        letter-spacing: 3px;
+        margin-bottom: 20px;
+    }
+
+    .promo-content p {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        color: #e0e0e0;
+    }
+
+
+    @media (max-width: 992px) {
+        .collection-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .collection-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-slider {
+            height: 70vh;
+        }
+
+        .slider-arrow {
+            width: 36px;
+            height: 36px;
+            font-size: 0.8rem;
+        }
+    }
+</style>
+
+{% endblock %}

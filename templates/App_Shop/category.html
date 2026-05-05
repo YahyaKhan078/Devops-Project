@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}{{ category.name }} — AURA{% endblock %}
+
+{% block body_block %}
+<section class="category-hero">
+    <div class="container">
+        <span class="category-eyebrow">Collection</span>
+        <h1>{{ category.name }}</h1>
+        <p class="category-count">{{ products|length }} piece{{ products|length|pluralize }}</p>
+    </div>
+</section>
+
+<section class="container" style="padding: 40px 20px 80px;">
+    {% if products %}
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card animate-on-scroll" style="transition-delay: {{ forloop.counter0 }}00ms;">
+            <a href="{% url 'App_Shop:product_detail' pk=product.pk %}">
+                <div class="product-image-wrap">
+                    {% if product.old_price > 0 %}<span class="badge-sale">Sale</span>{% endif %}
+                    {% if product.mainimage %}
+                        <img src="{{ product.mainimage.url }}" alt="{{ product.name }}" loading="lazy">
+                    {% else %}
+                        <img src="{% static 'img/placeholder.svg' %}" alt="Placeholder" loading="lazy">
+                    {% endif %}
+                    <div class="quick-view"><span>QUICK VIEW</span></div>
+                </div>
+            </a>
+            <div class="product-info zellbury-style">
+                <a href="{% url 'App_Shop:product_detail' pk=product.pk %}">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                </a>
+                <div class="product-price-wrap">
+                    <span class="product-price">&#2547; {{ product.price }}</span>
+                    {% if product.old_price > 0 %}
+                        <span class="product-old-price">&#2547; {{ product.old_price }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state animate-on-scroll">
+        <i class="fa-solid fa-box-open" style="font-size:2.5rem; color:var(--text-secondary); margin-bottom:16px;"></i>
+        <h3>Nothing here yet</h3>
+        <p>Check back soon — new pieces drop every Friday.</p>
+    </div>
+    {% endif %}
+</section>
+
+<style>
+.category-hero {
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+.category-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    display: block;
+    margin-bottom: 8px;
+}
+.category-hero h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.category-count {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+.badge-sale {
+    position: absolute; top: 12px; left: 12px; z-index: 3;
+    background-color: #e74c3c; color: #fff;
+    padding: 4px 10px; border-radius: 4px;
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+}
+.zellbury-style { text-align: center; }
+</style>
+{% endblock %}

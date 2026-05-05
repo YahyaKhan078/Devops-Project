@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title_block %}Checkout | AURA{% endblock %}
+
+{% block body_block %}
+<section class="checkout-page container">
+    <div class="checkout-header">
+        <h1>Checkout</h1>
+        <p class="checkout-subtitle">Complete your shipping details to proceed</p>
+    </div>
+
+    <div class="checkout-layout">
+        <!-- Shipping Address Form -->
+        <div class="checkout-form-section">
+            <h3 class="checkout-section-title">SHIPPING ADDRESS</h3>
+            <form method="POST" class="checkout-form">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    <input type="{{ field.field.widget.input_type|default:'text' }}"
+                           name="{{ field.html_name }}"
+                           id="{{ field.id_for_label }}"
+                           class="form-input {% if field.errors %}input-error{% endif %}"
+                           placeholder="{{ field.label }}"
+                           value="{{ field.value|default:'' }}">
+                    {% if field.errors %}
+                        <span class="field-error">{{ field.errors.0 }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn-primary" style="margin-top:12px;">SAVE ADDRESS</button>
+            </form>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="checkout-summary">
+            <h3 class="checkout-section-title">ORDER SUMMARY</h3>
+            <div class="checkout-items">
+                {% for cart in carts %}
+                <div class="checkout-item">
+                    <div class="checkout-item-img">
+                        {% if cart.item.mainimage %}
+                            <img src="{{ cart.item.mainimage.url }}" alt="{{ cart.item.name }}">
+                        {% endif %}
+                    </div>
+                    <div class="checkout-item-info">
+                        <span class="checkout-item-name">{{ cart.item.name }}</span>
+                        <span class="checkout-item-qty">Qty: {{ cart.quantity }}</span>
+                    </div>
+                    <span class="checkout-item-price">&#2547; {{ cart.get_total }}</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="checkout-total-row">
+                <span>Order Total</span>
+                <strong>&#2547; {{ order_total|floatformat:2 }}</strong>
+            </div>
+
+            {% if saved_address.is_fully_filled %}
+                <a href="{% url 'App_Payment:payment' %}" class="btn-primary" style="width:100%; text-align:center; margin-top:16px;">PROCEED TO PAYMENT</a>
+            {% else %}
+                <div class="checkout-notice">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Please fill in all shipping details before proceeding to payment.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<style>
+.checkout-page { padding: 40px 20px 80px; }
+.checkout-header { margin-bottom: 40px; }
+.checkout-header h1 { font-size: 2.4rem; letter-spacing: 2px; margin-bottom: 6px; }
+.checkout-subtitle { color: var(--text-secondary); font-size: 0.95rem; }
+
+.checkout-layout {
+    display: grid; grid-template-columns: 1fr 400px;
+    gap: 50px; align-items: start;
+}
+
+.checkout-section-title {
+    font-size: 0.85rem; letter-spacing: 2px; font-weight: 600;
+    margin-bottom: 24px; text-transform: uppercase;
+}
+
+.checkout-form { display: flex; flex-direction: column; gap: 18px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); font-weight: 500; }
+.form-input {
+    background-color: var(--bg-surface); border: 1px solid var(--border-color);
+    border-radius: 4px; padding: 14px 16px; color: var(--text-primary);
+    font-size: 1rem; font-family: var(--font-primary); outline: none;
+    transition: border-color 0.3s ease;
+}
+.form-input:focus { border-color: var(--accent-color); }
+.input-error { border-color: #e74c3c; }
+.field-error { color: #e74c3c; font-size: 0.8rem; }
+
+.checkout-summary {
+    background-color: var(--bg-surface); border: 1px solid var(--border-color);
+    border-radius: 8px; padding: 28px 24px; position: sticky; top: 80px;
+}
+.checkout-items { margin-bottom: 20px; }
+.checkout-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid var(--border-color);
+}
+.checkout-item-img { width: 56px; height: 70px; border-radius: 4px; overflow: hidden; background: var(--bg-primary); flex-shrink: 0; }
+.checkout-item-img img { width: 100%; height: 100%; object-fit: cover; }
+.checkout-item-info { flex-grow: 1; display: flex; flex-direction: column; gap: 3px; }
+.checkout-item-name { font-size: 0.88rem; font-weight: 500; }
+.checkout-item-qty { font-size: 0.78rem; color: var(--text-secondary); }
+.checkout-item-price { font-weight: 600; font-size: 0.92rem; white-space: nowrap; }
+
+.checkout-total-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 16px; font-size: 1rem;
+}
+.checkout-total-row span { color: var(--text-secondary); }
+
+.checkout-notice {
+    display: flex; align-items: flex-start; gap: 10px;
+    margin-top: 16px; padding: 14px; border-radius: 6px;
+    background-color: rgba(52, 152, 219, 0.08); border: 1px solid rgba(52, 152, 219, 0.2);
+}
+.checkout-notice i { color: #3498db; font-size: 1rem; margin-top: 2px; }
+.checkout-notice p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
+
+@media (max-width: 768px) {
+    .checkout-layout { grid-template-columns: 1fr; }
+}
+</style>
+{% endblock %}

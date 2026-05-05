@@ -1,0 +1,383 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_block %}
+<div class="product-detail-container">
+    <!-- Left Side: Gallery -->
+    <div class="product-gallery">
+        <!-- Thumbnails -->
+        <div class="thumbnail-list">
+            {% if product.mainimage %}
+            <div class="thumb-item active" onclick="changeImage('{{ product.mainimage.url }}', this)">
+                <img src="{{ product.mainimage.url }}" alt="{{ product.name }} 1">
+            </div>
+            {% endif %}
+            {% if product.image2 %}
+            <div class="thumb-item" onclick="changeImage('{{ product.image2.url }}', this)">
+                <img src="{{ product.image2.url }}" alt="{{ product.name }} 2">
+            </div>
+            {% endif %}
+            {% if product.image3 %}
+            <div class="thumb-item" onclick="changeImage('{{ product.image3.url }}', this)">
+                <img src="{{ product.image3.url }}" alt="{{ product.name }} 3">
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Main Image with Zoom -->
+        <div class="sticky-image-wrap" id="zoom-container">
+            {% if product.mainimage %}
+                <img id="main-product-img" src="{{ product.mainimage.url }}" alt="{{ product.name }}">
+            {% else %}
+                <img id="main-product-img" src="{% static 'img/placeholder.svg' %}" alt="Placeholder">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Right Side: Product Info -->
+    <div class="product-details-content">
+        <nav class="breadcrumb">
+            <a href="{% url 'App_Shop:home' %}">Home</a> &gt; 
+            <a href="#">{{ product.category.name|default:"Shop" }}</a> &gt; 
+            <span>{{ product.name }}</span>
+        </nav>
+
+        <h1 class="product-name">{{ product.name }}</h1>
+        
+        <div class="product-pricing">
+            <span class="current-price">&#2547; {{ product.price }}</span>
+            {% if product.old_price > 0 %}
+                <span class="old-price">&#2547; {{ product.old_price }}</span>
+                <span class="discount-badge">Sale</span>
+            {% endif %}
+        </div>
+
+        <div class="product-description">
+            <h3>The Details</h3>
+            <div class="desc-text">
+                {{ product.detail_text|linebreaks }}
+            </div>
+        </div>
+
+        <div class="product-actions">
+            <a href="{% url 'App_Order:add' pk=product.pk %}" class="btn-primary add-to-cart-btn">
+                <i class="fa-solid fa-bag-shopping"></i> Add to Cart
+            </a>
+        </div>
+
+        <div class="product-meta">
+            <div class="meta-item">
+                <i class="fa-solid fa-truck-fast"></i>
+                <div>
+                    <strong>Free Shipping</strong>
+                    <p>On all orders over &#2547; 5000</p>
+                </div>
+            </div>
+            <div class="meta-item">
+                <i class="fa-solid fa-rotate-left"></i>
+                <div>
+                    <strong>Easy Returns</strong>
+                    <p>30-day return policy</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if related_products %}
+<section class="related-products-section container">
+    <div class="section-title text-center">
+        <h2>You might be interested in</h2>
+        <div class="title-underline"></div>
+    </div>
+    <div class="product-grid">
+        {% for prod in related_products %}
+        <div class="product-card">
+            <a href="{% url 'App_Shop:product_detail' pk=prod.pk %}">
+                <div class="product-image-wrap">
+                    {% if prod.mainimage %}
+                        <img src="{{ prod.mainimage.url }}" alt="{{ prod.name }}" loading="lazy">
+                    {% else %}
+                        <img src="{% static 'img/placeholder.svg' %}" alt="Placeholder" loading="lazy">
+                    {% endif %}
+                    <div class="quick-view"><span>QUICK VIEW</span></div>
+                </div>
+            </a>
+            <div class="product-info zellbury-style">
+                <a href="{% url 'App_Shop:product_detail' pk=prod.pk %}">
+                    <h3 class="product-title">{{ prod.name }}</h3>
+                </a>
+                <div class="product-price-wrap">
+                    <span class="product-price">&#2547; {{ prod.price }}</span>
+                    {% if prod.old_price > 0 %}
+                        <span class="product-old-price">&#2547; {{ prod.old_price }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<style>
+/* Product Detail Split Screen */
+.related-products-section {
+    padding: 80px 20px 40px;
+}
+.product-detail-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 56px);
+    background-color: var(--bg-primary);
+}
+
+.product-gallery {
+    background-color: var(--bg-surface);
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    padding: var(--spacing-lg);
+}
+
+/* Thumbnails */
+.thumbnail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-right: 20px;
+    position: sticky;
+    top: calc(56px + var(--spacing-lg));
+    height: fit-content;
+    z-index: 5;
+}
+
+.thumb-item {
+    width: 80px;
+    height: 100px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.thumb-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumb-item:hover, .thumb-item.active {
+    opacity: 1;
+    border-color: var(--accent-color);
+}
+
+/* Main Image & Zoom */
+.sticky-image-wrap {
+    flex-grow: 1;
+    position: sticky;
+    top: 56px;
+    height: calc(100vh - 56px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Required for zoom */
+    cursor: zoom-in;
+}
+
+#main-product-img {
+    max-height: 90%;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.2s ease-out;
+}
+
+.product-details-content {
+    padding: var(--spacing-xl) 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.breadcrumb {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-lg);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.breadcrumb a:hover {
+    color: var(--text-primary);
+}
+
+.breadcrumb span {
+    color: var(--text-primary);
+}
+
+.product-name {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.1;
+    margin-bottom: var(--spacing-md);
+}
+
+.product-pricing {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.current-price {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.old-price {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    text-decoration: line-through;
+}
+
+.discount-badge {
+    background-color: #e74c3c;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.product-description h3 {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.desc-text {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-xl);
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--spacing-xl);
+}
+
+.product-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.meta-item i {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.meta-item strong {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+.meta-item p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .product-detail-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-gallery {
+        flex-direction: column-reverse;
+    }
+
+    .thumbnail-list {
+        flex-direction: row;
+        margin-right: 0;
+        margin-top: 20px;
+        position: static;
+        justify-content: center;
+    }
+
+    .thumb-item {
+        width: 60px;
+        height: 80px;
+    }
+    
+    .sticky-image-wrap {
+        position: relative;
+        top: 0;
+        height: 60vh;
+        padding: 0;
+    }
+    
+    .product-details-content {
+        padding: var(--spacing-xl) var(--spacing-lg);
+    }
+}
+</style>
+
+<script>
+function changeImage(src, element) {
+    document.getElementById('main-product-img').src = src;
+    
+    // Update active state on thumbnails
+    document.querySelectorAll('.thumb-item').forEach(el => el.classList.remove('active'));
+    if (element) {
+        element.classList.add('active');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const zoomContainer = document.getElementById('zoom-container');
+    const mainImg = document.getElementById('main-product-img');
+    
+    // Only apply zoom on desktop where hover makes sense
+    if (window.matchMedia("(min-width: 993px)").matches) {
+        zoomContainer.addEventListener('mousemove', (e) => {
+            const { left, top, width, height } = zoomContainer.getBoundingClientRect();
+            
+            // Calculate mouse position as percentage
+            const x = ((e.clientX - left) / width) * 100;
+            const y = ((e.clientY - top) / height) * 100;
+            
+            mainImg.style.transformOrigin = `${x}% ${y}%`;
+            mainImg.style.transform = 'scale(2)';
+        });
+        
+        zoomContainer.addEventListener('mouseleave', () => {
+            mainImg.style.transformOrigin = 'center center';
+            mainImg.style.transform = 'scale(1)';
+        });
+    }
+});
+</script>
+{% endblock %}

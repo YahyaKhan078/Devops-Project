@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">  
+    
+    <title>{% block title_block %} AURA | Premium Men's Clothing {% endblock %}</title>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    
+    <main class="main-content">
+        <!-- Toast Messages -->
+        <div class="toast-container" id="toastContainer">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="toast toast-{{ message.tags }}">
+                        <span class="toast-message">{{ message }}</span>
+                        <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {% block body_block %}{% endblock %}
+    </main>
+
+    <section class="social-section">
+        <div class="social-header container">
+            <h2>Follow Us on Instagram</h2>
+            <a href="https://www.instagram.com/basileus_7/" target="_blank" class="btn-instagram">
+                <i class="fa-brands fa-instagram"></i> @basileus_7
+            </a>
+        </div>
+        <div class="footer-videos">
+            <video src="{% static 'img/footer1.mp4' %}" autoplay muted loop playsinline></video>
+            <video src="{% static 'img/footer2.mp4' %}" autoplay muted loop playsinline></video>
+            <video src="{% static 'img/footer3.mp4' %}" autoplay muted loop playsinline></video>
+            <video src="{% static 'img/footer4.mp4' %}" autoplay muted loop playsinline></video>
+        </div>
+    </section>
+
+    <section class="newsletter-section">
+        <div class="container text-center">
+            <h2>Subscribe to our Newsletter</h2>
+            <p>Get the latest updates on new arrivals, exclusive offers, and more.</p>
+            <form class="newsletter-form" action="#" method="POST">
+                {% csrf_token %}
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit" class="btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-content container">
+            <div class="footer-brand">
+                <h2>AURA.</h2>
+                <p>Elevating men's fashion with timeless pieces and sustainable practices.</p>
+            </div>
+            <div class="footer-links">
+                <div class="link-column">
+                    <h3>Shop</h3>
+                    <a href="{% url 'App_Shop:search' %}?q=">New Arrivals</a>
+                    <a href="{% url 'App_Shop:search' %}?q=">Best Sellers</a>
+                    <a href="{% url 'App_Shop:home' %}">Collections</a>
+                </div>
+                <div class="link-column">
+                    <h3>Company</h3>
+                    <a href="{% url 'App_Shop:about' %}">About Us</a>
+                    <a href="{% url 'App_Shop:about' %}">Sustainability</a>
+                    <a href="{% url 'App_Shop:about' %}">Careers</a>
+                </div>
+                <div class="link-column">
+                    <h3>Support</h3>
+                    <a href="{% url 'App_Shop:contact' %}">Contact Us</a>
+                    <a href="{% url 'App_Shop:contact' %}">Shipping & Returns</a>
+                    <a href="{% url 'App_Shop:contact' %}">FAQ</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2026 AURA Menswear. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title_block %}Create Account | AURA{% endblock %}
+
+{% block body_block %}
+<section class="auth-split">
+    <!-- Left: Brand Side -->
+    <div class="auth-brand">
+        <div class="auth-brand-content">
+            <span class="auth-label">BECOME A MEMBER</span>
+            <h1 class="auth-headline">Join the<br>house.</h1>
+            <p class="auth-subtext">Early access to seasonal drops, atelier events and complimentary alterations on your first piece.</p>
+        </div>
+    </div>
+
+    <!-- Right: Form Side -->
+    <div class="auth-form-side">
+        <form method="post" class="auth-form-luxe">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="luxe-field">
+                <label for="{{ field.id_for_label }}">{{ field.label|upper }}</label>
+                <input type="{{ field.field.widget.input_type|default:'text' }}" 
+                       name="{{ field.html_name }}" 
+                       id="{{ field.id_for_label }}"
+                       class="luxe-input {% if field.errors %}input-error{% endif %}"
+                       placeholder="{{ field.label }}"
+                       value="{{ field.value|default:'' }}"
+                       {% if field.field.required %}required{% endif %}>
+                {% if field.help_text %}
+                    <span class="field-help">{{ field.help_text }}</span>
+                {% endif %}
+                {% if field.errors %}
+                    <span class="field-error">{{ field.errors.0 }}</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="btn-luxe-auth">CREATE ACCOUNT</button>
+        </form>
+
+        <div class="auth-switch">
+            <p>Already a member? <a href="{% url 'App_Login:login' %}" class="auth-link-luxe">Sign in</a></p>
+        </div>
+    </div>
+</section>
+
+<style>
+.auth-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 85vh;
+}
+
+.auth-brand {
+    display: flex;
+    align-items: center;
+    padding: 80px 60px;
+}
+
+.auth-brand-content {
+    max-width: 420px;
+    transform: translateY(-8vh);
+}
+
+.auth-label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s ease forwards;
+}
+
+.auth-headline {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.4s ease forwards;
+}
+
+.auth-subtext {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    max-width: 320px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.6s ease forwards;
+}
+
+.auth-form-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px;
+    border-left: 1px solid var(--border-color);
+}
+
+.auth-form-luxe {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 400px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.3s ease forwards;
+}
+
+.luxe-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.luxe-field label {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.luxe-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 0;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: var(--font-primary);
+    outline: none;
+    transition: border-color 0.3s ease;
+    border-radius: 0;
+}
+
+.luxe-input:focus {
+    border-bottom-color: var(--accent-color);
+}
+
+.luxe-input.input-error {
+    border-bottom-color: #e74c3c;
+}
+
+.field-error {
+    color: #e74c3c;
+    font-size: 0.8rem;
+}
+
+.field-help {
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    line-height: 1.4;
+}
+
+.btn-luxe-auth {
+    width: 100%;
+    padding: 16px;
+    background-color: var(--text-secondary);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-primary);
+    margin-top: 12px;
+}
+
+.btn-luxe-auth:hover {
+    background-color: var(--text-primary);
+}
+
+.auth-switch {
+    margin-top: 28px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.5s ease forwards;
+}
+
+.auth-switch p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.auth-link-luxe {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .auth-split {
+        grid-template-columns: 1fr;
+    }
+    .auth-brand {
+        padding: 60px 30px 30px;
+    }
+    .auth-form-side {
+        padding: 30px;
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+    }
+}
+</style>
+{% endblock %}

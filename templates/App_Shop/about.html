@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title_block %}About Us | AURA{% endblock %}
+
+{% block body_block %}
+<!-- Hero Banner -->
+<section class="about-hero" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static "img/OURSTORYBACKGROUND.png" %}'); background-size: cover; background-position: center;">
+    <div class="about-hero-overlay">
+        <h1>OUR STORY</h1>
+        <p>Representing style and quality since 2020</p>
+    </div>
+</section>
+
+<!-- Intro Section -->
+<section class="about-intro container">
+    <div class="about-intro-grid">
+        <div class="about-text animate-on-scroll">
+            <h2>WHO WE ARE</h2>
+            <p>AURA is representing style and quality since 2020. AURA works on a basis of creativity and
+                responsibility, fused with a mirroring contemporary street style. Effortless style, authenticity and
+                easy-going living are at the heart of the brand's philosophy.</p>
+            <p>Our brand embodies the spirit of modern men who value both comfort and sophistication. Every piece in our
+                collection is thoughtfully designed to transition seamlessly from casual weekends to polished weekday
+                looks.</p>
+        </div>
+        <div class="about-image animate-on-scroll delay-200">
+            <img src="{% static 'img/about1.jpg' %}" alt="AURA Menswear">
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="about-values">
+    <div class="container">
+        <div class="section-title text-center animate-on-scroll">
+            <h2>OUR VALUES</h2>
+            <div class="title-underline"></div>
+        </div>
+        <div class="values-grid">
+            <div class="value-card animate-on-scroll delay-100">
+                <i class="fa-solid fa-leaf"></i>
+                <h3>Sustainability</h3>
+                <p>We are committed to sustainable practices. From sourcing eco-friendly fabrics to reducing waste in
+                    our production process, every decision is made with the planet in mind.</p>
+            </div>
+            <div class="value-card animate-on-scroll delay-200">
+                <i class="fa-solid fa-gem"></i>
+                <h3>Quality</h3>
+                <p>We believe in creating garments that last. Each piece undergoes rigorous quality checks to ensure it
+                    meets our exacting standards of craftsmanship and durability.</p>
+            </div>
+            <div class="value-card animate-on-scroll delay-300">
+                <i class="fa-solid fa-handshake"></i>
+                <h3>Community</h3>
+                <p>Building a community of style-conscious individuals who share our passion for fashion. We celebrate
+                    diversity and inclusivity in everything we do.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission Section -->
+<section class="about-mission container">
+    <div class="about-intro-grid reverse">
+        <div class="about-image animate-on-scroll">
+            <img src="{% static 'img/about2.webp' %}" alt="AURA Collection">
+        </div>
+        <div class="about-text animate-on-scroll delay-200">
+            <h2>OUR MISSION</h2>
+            <p>At AURA, our mission is to redefine men's fashion by blending timeless elegance with contemporary trends.
+                We strive to offer premium quality clothing that empowers every man to express his unique style with
+                confidence.</p>
+            <p>We envision a world where fashion is accessible, sustainable, and deeply personal. Our collections are
+                curated to inspire self-expression while maintaining the highest standards of comfort and craftsmanship.
+            </p>
+            <a href="{% url 'App_Shop:home' %}" class="btn-primary">EXPLORE COLLECTION</a>
+        </div>
+    </div>
+</section>
+
+<!-- Brand Features -->
+<section class="brand-features container">
+    <div class="feature-item animate-on-scroll delay-100">
+        <i class="fa-solid fa-truck-fast"></i>
+        <h4>FREE SHIPPING</h4>
+        <p>On orders over 5000 BDT</p>
+    </div>
+    <div class="feature-item animate-on-scroll delay-200">
+        <i class="fa-solid fa-rotate-left"></i>
+        <h4>EASY RETURNS</h4>
+        <p>30 days return policy</p>
+    </div>
+    <div class="feature-item animate-on-scroll delay-300">
+        <i class="fa-solid fa-headset"></i>
+        <h4>24/7 SUPPORT</h4>
+        <p>Dedicated customer service</p>
+    </div>
+    <div class="feature-item animate-on-scroll delay-400">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h4>SECURE PAYMENT</h4>
+        <p>100% secure checkout</p>
+    </div>
+</section>
+
+<style>
+    /* ======================================================
+   BRAND FEATURES
+   ====================================================== */
+    .brand-features {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        padding: 80px 20px;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .feature-item i {
+        font-size: 2rem;
+        color: var(--text-primary);
+        margin-bottom: 15px;
+    }
+
+    .feature-item h4 {
+        font-size: 1rem;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    .feature-item p {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+        .brand-features {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .about-hero {
+        position: relative;
+        height: 50vh;
+        margin-top: -56px;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+        url("{% static 'img/hero-banner.png' %}");
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .about-hero-overlay {
+        text-align: center;
+    }
+
+    .about-hero-overlay h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        letter-spacing: 6px;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+
+    .about-hero-overlay p {
+        font-size: 1.1rem;
+        color: #e0e0e0;
+        letter-spacing: 2px;
+    }
+
+    .about-intro {
+        padding: 80px 20px;
+    }
+
+    .about-intro-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+    }
+
+    .about-intro-grid.reverse {
+        direction: rtl;
+    }
+
+    .about-intro-grid.reverse>* {
+        direction: ltr;
+    }
+
+    .about-text h2 {
+        font-size: 1.8rem;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .about-text p {
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 16px;
+        font-size: 0.95rem;
+    }
+
+    .about-text .btn-primary {
+        margin-top: 16px;
+    }
+
+    .about-image img {
+        width: 100%;
+        border-radius: 6px;
+        object-fit: cover;
+        aspect-ratio: 4/5;
+    }
+
+    .about-values {
+        background-color: var(--bg-secondary);
+        padding: 80px 20px;
+    }
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+        margin-top: 40px;
+    }
+
+    .value-card {
+        text-align: center;
+        padding: 40px 24px;
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .value-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--accent-color);
+    }
+
+    .value-card i {
+        font-size: 2.2rem;
+        color: var(--accent-color);
+        margin-bottom: 20px;
+    }
+
+    .value-card h3 {
+        font-family: var(--font-primary);
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+    }
+
+    .value-card p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.7;
+    }
+
+    .about-mission {
+        padding: 80px 20px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+
+        .about-intro-grid,
+        .values-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .about-intro-grid.reverse {
+            direction: ltr;
+        }
+    }
+</style>
+{% endblock %}
