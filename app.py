@@ -1,8 +1,18 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 CORS(app)
+
+# Serve frontend
+@app.route('/')
+def index():
+    return send_from_directory('frontend', 'index.html')
+
+@app.route('/frontend/<path:filename>')
+def frontend_files(filename):
+    return send_from_directory('frontend', filename)
 
 # Health check endpoint
 @app.route('/health', methods=['GET'])
